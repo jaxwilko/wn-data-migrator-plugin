@@ -1,0 +1,11 @@
+fields:
+    storage:
+        label: 'Storage Path'
+        type: text
+        default: 'datamigrator'
+        comment: 'Set a custom path inside the storage directory'
+    tables:
+        label: Tables
+        type: checkboxlist
+        quickselect: true
+        options: 'availableTables'

@@ -1,0 +1,14 @@
+{
+    "name": "jaxwilko/datamigrator",
+    "type": "october-plugin",
+    "description": "A plugin that converts your data to flat files",
+    "homepage": "https://github.com/jaxwilko/oc-data-migrator-plugin",
+    "keywords": ["october", "cms"],
+    "authors": [
+        {
+            "name": "Jack Wilkinson",
+            "email": "me@jackwilky.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
