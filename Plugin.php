@@ -33,22 +33,6 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function registerPermissions()
-    {
-        return [
-            'jaxwilko.datamigrator.access_controls' => [
-                'label' => 'jaxwilko.datamigrator::lang.settings.controls_description',
-                'tab' => 'jaxwilko.datamigrator::lang.plugin.name',
-                'order' => 1000,
-            ],
-            'jaxwilko.datamigrator.build_data' => [
-                'label' => 'jaxwilko.datamigrator::lang.settings.build_data',
-                'tab' => 'jaxwilko.datamigrator::lang.plugin.name',
-                'order' => 1001,
-            ],
-        ];
-    }
-
     public function boot()
     {
         \App::register('\JaxWilko\DataMigrator\ServiceProvider');
