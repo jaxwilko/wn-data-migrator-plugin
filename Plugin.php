@@ -3,6 +3,9 @@
 namespace JaxWilko\DataMigrator;
 
 use Event;
+use JaxWilko\DataMigrator\Console\Flatten;
+use JaxWilko\DataMigrator\Console\Migrate;
+use JaxWilko\DataMigrator\Models\Migration;
 use System\Classes\PluginBase;
 use System\Classes\SettingsManager;
 
@@ -33,8 +36,10 @@ class Plugin extends PluginBase
         ];
     }
 
-    public function boot()
+
+    public function register()
     {
-        \App::register('\JaxWilko\DataMigrator\ServiceProvider');
+        $this->registerConsoleCommand('jaxwilko.datamigrator.flat', Flatten::class);
+        $this->registerConsoleCommand('jaxwilko.datamigrator.migrate', Migrate::class);
     }
 }
