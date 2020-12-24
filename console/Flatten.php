@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use JaxWilko\DataMigrator\Classes\Utils;
 use JaxWilko\DataMigrator\Models\Settings;
+use League\Csv\Writer;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -57,10 +58,10 @@ class Flatten extends Command
             mkdir($path, 0755);
         }
 
-        $file = new \SplFileObject($filePath, 'w');
+        $csv = Writer::createFromPath($filePath, 'w');
 
         $headings = array_keys((array) $data[0]);
-        $file->fputcsv($headings);
+        $csv->insertOne($headings);
 
         foreach ($data as $record) {
             $record = (array) $record;
@@ -69,10 +70,10 @@ class Flatten extends Command
                     $record[$index] = json_encode($value);
                 }
             }
-            $file->fputcsv(array_values($record));
+            $csv->insertOne(array_values($record));
         }
 
-        $file = null;
+        $csv = null;
 
         Utils::filePrepend($filePath, sprintf('hash,%s%s', sha1_file($filePath), PHP_EOL));
 

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Schema;
 use JaxWilko\DataMigrator\Classes\Utils;
 use JaxWilko\DataMigrator\Models\Settings;
 use JaxWilko\DataMigrator\Models\Migration;
+use League\Csv\Reader;
+use League\Csv\Statement;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 
@@ -49,19 +51,14 @@ class Migrate extends Command
         $filePath = Utils::getTableFilePath($table);
 
         try {
-            $file = new \SplFileObject($filePath, 'r');
+            $csv = Reader::createFromPath($filePath, 'r');
         } catch (\Throwable $e) {
             $this->error(sprintf('unable to read table source: `%s`', $table));
             return false;
         }
 
-        $file->setFlags(
-            \SplFileObject::READ_CSV
-            | \SplFileObject::SKIP_EMPTY
-            | \SplFileObject::READ_AHEAD
-        );
-
-        $hash = $file->fgetcsv();
+        $csv->setHeaderOffset(0);
+        $hash = $csv->getHeader();
 
         if ($hash[0] !== 'hash') {
             throw new \ErrorException(sprintf('table `%s` has no hash header', $table));
@@ -81,23 +78,17 @@ class Migrate extends Command
         $model->truncate();
         Schema::enableForeignKeyConstraints();
 
-        $headings = $file->fgetcsv();
+        $csv->setHeaderOffset(1);
+        $records = (new Statement())->offset(1)->process($csv);
 
-        while(!$file->eof()) {
-            $record = $file->fgetcsv();
-            if (empty($record)) {
-                continue;
-            }
-
-            $data = array_combine($headings, $record);
-
-            foreach ($data as $key => $value) {
+        foreach ($records as $record) {
+            foreach ($record as $key => $value) {
                 if ($value === '' && !in_array($key, $notNulls)) {
-                    $data[$key] = null;
+                    $record[$key] = null;
                 }
             }
 
-            $model->insert($data);
+            $model->insert($record);
         }
 
         (new Migration([
