@@ -1,3 +1,5 @@
 1.0.1:
     - 'Initialize plugin.'
     - builder_table_create_jaxwilko_datamigrator_migrations.php
+1.0.2:
+    - 'Tweaks and enhancements, better console options'
