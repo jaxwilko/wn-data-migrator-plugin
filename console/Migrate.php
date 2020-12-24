@@ -30,18 +30,18 @@ class Migrate extends Command
     public function handle()
     {
         if ($this->option('table')) {
-            $this->rebuildTable($this->option('table'));
+            $this->rebuildTable($this->option('table'), $this->option('force'));
             return;
         }
 
         foreach (Settings::get('tables') as $table) {
-            $this->rebuildTable($table);
+            $this->rebuildTable($table, $this->option('force'));
         }
     }
 
-    protected function rebuildTable($table)
+    protected function rebuildTable(string $table, bool $force = false)
     {
-        if (Migration::imported($table)) {
+        if (!$force && Migration::imported($table)) {
             $this->warn(sprintf('%s does not need importing', $table));
             return true;
         }
@@ -126,7 +126,8 @@ class Migrate extends Command
     protected function getOptions()
     {
         return [
-            ['table', null, InputOption::VALUE_OPTIONAL, 'Which table to update from.', null]
+            ['table', 't', InputOption::VALUE_OPTIONAL, 'Table to migrate.', null],
+            ['force', 'f', InputOption::VALUE_NONE, 'Force migration to re-run.', null]
         ];
     }
 }

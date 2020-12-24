@@ -97,7 +97,7 @@ class Flatten extends Command
     protected function getOptions()
     {
         return [
-            ['table', null, InputOption::VALUE_OPTIONAL, 'Which table to update from.', null]
+            ['table', 't', InputOption::VALUE_OPTIONAL, 'Table to convert into flat file.', null]
         ];
     }
 }
