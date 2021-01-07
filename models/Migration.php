@@ -14,7 +14,7 @@ class Migration extends Model
         'hash'
     ];
 
-    public static function imported(string $table)
+    public static function imported(string $table): bool
     {
         $fp = fopen(Utils::getTableFilePath($table), 'r');
         $hash = fgetcsv($fp);
@@ -24,6 +24,10 @@ class Migration extends Model
             throw new \ErrorException(sprintf('table `%s` does not include a hash header', $table));
         }
 
-        return !!static::where([['table', '=', $table], ['hash', '=', $hash[1]]])->first();
+        $result = static::where('table', '=', $table)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        return ($result->hash ?? null) === $hash;
     }
 }
