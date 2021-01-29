@@ -10,5 +10,8 @@
             "email": "me@jackwilky.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "require": {
+        "league/csv": "^9.0"
+    }
 }
