@@ -5,3 +5,5 @@
     - 'Tweaks and enhancements, better console options'
 1.0.3:
     - 'Updated migration checking to only include last appended hash for table'
+1.0.4:
+    - 'Bug fixes and enforced requirements'
