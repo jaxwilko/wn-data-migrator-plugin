@@ -28,6 +28,6 @@ class Migration extends Model
             ->orderBy('id', 'desc')
             ->first();
 
-        return ($result->hash ?? null) === $hash;
+        return ($result->hash ?? null) === $hash[1];
     }
 }
