@@ -16,7 +16,13 @@ class Migration extends Model
 
     public static function imported(string $table): bool
     {
-        $fp = fopen(Utils::getTableFilePath($table), 'r');
+        $path = Utils::getTableFilePath($table);
+
+        if (!file_exists($path)) {
+            return true;
+        }
+
+        $fp = fopen($path, 'r');
         $hash = fgetcsv($fp);
         fclose($fp);
 
