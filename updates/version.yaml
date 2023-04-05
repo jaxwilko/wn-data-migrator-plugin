@@ -9,3 +9,5 @@
     - 'Bug fixes and enforced requirements'
 1.0.5:
     - 'Fixed issue with empty tables'
+1.0.6:
+    - 'Fixed issue with constraint checking'
