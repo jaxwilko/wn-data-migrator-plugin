@@ -76,7 +76,6 @@ class Migrate extends Command
 
         Schema::disableForeignKeyConstraints();
         $model->truncate();
-        Schema::enableForeignKeyConstraints();
 
         $csv->setHeaderOffset(1);
         $records = (new Statement())->offset(1)->process($csv);
@@ -90,6 +89,8 @@ class Migrate extends Command
 
             $model->insert($record);
         }
+
+        Schema::enableForeignKeyConstraints();
 
         (new Migration([
             'table' => $table,
