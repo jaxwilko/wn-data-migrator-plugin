@@ -36,7 +36,18 @@ class Migrate extends Command
             return;
         }
 
-        foreach (Settings::get('tables') as $table) {
+        $tables = Settings::get('tables');
+
+        if (in_array('system_settings', $tables)) {
+            // Always process the system table first if it's being tracked
+            $this->rebuildTable('system_settings', $this->option('force'));
+
+            // Reload the tables from the newly imported settings
+            $tables = Settings::get('tables');
+            unset($tables[array_search('system_settings', $tables)]);
+        }
+
+        foreach ($tables as $table) {
             $this->rebuildTable($table, $this->option('force'));
         }
     }
