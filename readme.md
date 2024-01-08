@@ -7,6 +7,12 @@ Manage your data via your VCS.
 This plugin allows for the transportation of data by converting you tables to flat data files. Once a table has been
 flattened it can then be reimported.
 
+## Install
+
+```bash
+composer require jaxwilko/datamigrator
+```
+
 ## Usage
 
 Via the plugin settings page you can configure which tables you want to be flattened/migrated and specify 
